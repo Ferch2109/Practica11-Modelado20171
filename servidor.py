@@ -29,7 +29,7 @@ class Servidor(QtGui.QMainWindow):
 		self.timer = QtCore.QTimer( self )
 		self.timer_servidor = QtCore.QTimer( self )
 		self.snakes_bebes = []
-		self.servidor = None
+		self.serv = None
 		self.redimensionar()
 		self.poner_lienzo_celdas()
 		self.clickers()
@@ -57,7 +57,7 @@ class Servidor(QtGui.QMainWindow):
 		self.estado_juego.clicked.connect( self.edo_del_juego )
 		self.termina_juego.clicked.connect( self.terminar_juego )
 		self.timeout.valueChanged.connect( self.set_timeout )
-		self.ping.clicked.connect( self.servidor )
+		self.ping_pong.clicked.connect( self.servidor )
 
 
 	def edo_del_juego( self ):
@@ -253,24 +253,24 @@ class Servidor(QtGui.QMainWindow):
 
 
 	def peticiones( self ):
-		self.servidor.handle_request()
+		self.serv.handle_request()
 
 	def servidor(self):
-		self.servidor = SimpleXMLRPCServer( ( self.url.text() , 0 ) )
-		self.servidor.timeout = 0
-		puerto = self.servidor.server_address[1] 
+		self.serv = SimpleXMLRPCServer( ( self.url.text() , 0 ) )
+		self.serv.timeout = 0
+		puerto = self.serv.server_address[1] 
 		self.puerto.setValue(puerto)
-		self.servidor.register_function(self.ping)
-		self.servidor.register_function(self.yo_juego)
-		self.servidor.register_function(self.cambia_direccion)
-		self.servidor.register_function(self.estado_del_juego)
-		self.timer_servidor.connect( self.peticiones )
-		self.timer_servidor.start( self.servidor.timeout )
+		self.serv.register_function(self.ping)
+		self.serv.register_function(self.yo_juego)
+		self.serv.register_function(self.cambia_direccion)
+		self.serv.register_function(self.estado_del_juego)
+		self.timer_serv.timeout.connect( self.peticiones )
+		self.timer_serv.start( self.serv.timeout )
 
 
 	def set_timeout( self ):
-		self.servidor.timeout = self.timeout.valuue()
-		self.timer_servidor.setInterval( self.timeout.value() )
+		self.serv.timeout = self.timeout.value()
+		self.timer_serv.setInterval( self.timeout.value() )
 
 
 

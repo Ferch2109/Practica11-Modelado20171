@@ -28,8 +28,8 @@ class Cliente(MainWindowUI, MainWindowBase):
 		url = self.url.text()
 		puerto = self.puerto.value()
 
-#		self.servidor = ServerProxy( "http://"+url+":"+str(puerto) )
-		self.servidor = ServerProxy( "http://127.0.1:8000" )
+		self.servidor = ServerProxy( "http://"+url+":"+str(puerto) )
+		#self.servidor = ServerProxy( "http://127.0.0.1:8000" )
 
 
 	def conectar_con_ping( self ):
@@ -37,7 +37,7 @@ class Cliente(MainWindowUI, MainWindowBase):
 		
 		try:
 			self.conexion()
-			pong = self.servidor.ping()
+			pong = self.serv.ping()
 			print(pong)
 			self.ping_pong.setText("¡Pong!")
 		except:
